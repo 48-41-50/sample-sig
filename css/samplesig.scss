@@ -1,0 +1,128 @@
+@mixin vertical-align-center($pos) {
+    position: $pos;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+
+@mixin diag-stripes($angle, $color1, $width1, $color2, $width2) {
+    background: -webkit-repeating-linear-gradient(
+        $angle, 
+        $color1, 
+        $color1 $width1, 
+        $color2 $width1, 
+        $color2 $width2
+    );
+    background: repeating-linear-gradient(
+        $angle, 
+        $color1, 
+        $color1 $width1, 
+        $color2 $width1, 
+        $color2 $width2
+    );
+}
+
+
+body {
+    @include diag-stripes(-60deg, #848484, 5px, #909090, 10px);
+}
+
+div.docpage {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    width: 8in;
+    height: 11in;
+    background-color: white;
+    padding: .5in .75in;
+    border: 1px solid black;
+    position: relative;
+    
+    div.signarea {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        margin-bottom: 100px;
+        
+        div.signlabel {
+            border-collapse: collapse;
+            @include vertical-align-center(absolute);
+            z-index: 10;
+            
+            td {
+                text-align: center;
+                vertical-align: middle;
+            }
+            
+            td.up-arrow, td.dn-arrow {
+                border-collapse: collapse;
+                border-left: 1px solid black;
+            }
+            
+            td.up-arrow {
+                border-top: 1px solid black;
+            }
+            
+            td.dn-arrow {
+                border-bottom: 1px solid black;
+            }
+            
+            td.labeltag {
+                border-collapse: collapse;
+                border-top: 1px solid black;
+                border-bottom: 1px solid black;
+                border-right: 1px solid black;
+                font-family: sans-serif;
+                font-weight: bold;
+                padding: 2px 5px;
+            }
+            
+            td.left-arrow {
+                border: 0px;
+                padding-left: 5px;
+                text-align: right;
+            }
+        }
+        
+        div.signblock {
+            @include diag-stripes(-60deg, #E7ED66, 2px, #DCC941, 5px);
+            padding: 10px;
+            height: 1in;
+            width: 7.75in;
+            border: 1px solid black;
+            margin-left: auto;
+            margin-right: auto;
+            
+            div.rec-sig-msg {
+                font-size: smaller;
+                position: absolute;
+                top: 2px;
+                left: 20px;
+            }
+            
+            div.signature {
+                @include vertical-align-center(relative);
+                background-color: white;
+                margin-left: 10px;
+                float: left;
+                width: 5in;
+                height: .8in;
+                border: 1px solid black;
+            }
+            
+            div.signature:hover {
+                border: 1px solid blue;
+            }
+            
+            input.signdate {
+                @include vertical-align-center(relative);
+                margin-right: 10px;
+                float: right;
+            }
+        }
+    }
+}

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sample Signature Web App</title>
+        <style>
+body {
+  background: -webkit-repeating-linear-gradient(-60deg, #848484, #848484 5px, #909090 5px, #909090 10px);
+  background: repeating-linear-gradient(-60deg, #848484, #848484 5px, #909090 5px, #909090 10px); }
+
+div.docpage {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  width: 8in;
+  height: 11in;
+  background-color: white;
+  padding: .5in .75in;
+  border: 1px solid black;
+  position: relative; }
+  div.docpage div.signarea {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin-bottom: 100px; }
+    div.docpage div.signarea div.signlabel {
+      border-collapse: collapse;
+      position: absolute;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+      z-index: 10; }
+      div.docpage div.signarea div.signlabel td {
+        text-align: center;
+        vertical-align: middle; }
+      div.docpage div.signarea div.signlabel td.up-arrow, div.docpage div.signarea div.signlabel td.dn-arrow {
+        border-collapse: collapse;
+        border-left: 1px solid black; }
+      div.docpage div.signarea div.signlabel td.up-arrow {
+        border-top: 1px solid black; }
+      div.docpage div.signarea div.signlabel td.dn-arrow {
+        border-bottom: 1px solid black; }
+      div.docpage div.signarea div.signlabel td.labeltag {
+        border-collapse: collapse;
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+        border-right: 1px solid black;
+        font-family: sans-serif;
+        font-weight: bold;
+        padding: 2px 5px; }
+      div.docpage div.signarea div.signlabel td.left-arrow {
+        border: 0px;
+        padding-left: 5px;
+        text-align: right; }
+    div.docpage div.signarea div.signblock {
+      background: -webkit-repeating-linear-gradient(-60deg, #E7ED66, #E7ED66 2px, #DCC941 2px, #DCC941 5px);
+      background: repeating-linear-gradient(-60deg, #E7ED66, #E7ED66 2px, #DCC941 2px, #DCC941 5px);
+      padding: 10px;
+      height: 1in;
+      width: 7.75in;
+      border: 1px solid black;
+      margin-left: auto;
+      margin-right: auto; }
+      div.docpage div.signarea div.signblock div.rec-sig-msg {
+        font-size: smaller;
+        position: absolute;
+        top: 2px;
+        left: 20px; }
+      div.docpage div.signarea div.signblock div.signature {
+        position: relative;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        background-color: white;
+        margin-left: 10px;
+        float: left;
+        width: 5in;
+        height: .8in;
+        border: 1px solid black; }
+      div.docpage div.signarea div.signblock div.signature:hover {
+        border: 1px solid blue; }
+      div.docpage div.signarea div.signblock input.signdate {
+        position: relative;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        margin-right: 10px;
+        float: right; }
+
+/*# sourceMappingURL=samplesig.css.map */
+        </style>
+        <script type="text/javascript">
+'use strict';
+
+var docSigImg = null;
+var signatureElements = null;
+
+
+/*
+ * SetDateMaxValue: Set date input controls to not allow a future date
+ */
+function SetDateMaxValue()
+{
+    function Pad(v)
+    {
+        if ( v < 10 ) {
+            v = '0' + v.toString();
+        } else {
+            v = v.toString();
+        }
+        
+        return v;
+    }
+    
+    
+    let today = new Date();
+    let maxDate = today.getFullYear().toString() + '-' + Pad(today.getMonth() + 1) + '-' + Pad(today.getDate());
+    
+    let dates = document.getElementsByName("signdate");
+    
+    for( let i = 0; i < dates.length; i++ ) {
+        dates[i].max = maxDate;
+    }
+}
+
+
+/*
+ * direction is 'up', 'down', 'left', 'right'
+ *                2
+ *               / \
+ *              1---3
+ */
+function DrawArrow(context, direction) {
+    var left = 0;
+    var right = context.canvas.width - 1;
+    var top = 0;
+    var bottom = context.canvas.height - 1;
+              /* x  y */
+    var path = new Array();
+    
+    /*context.globalAlpha = 1;*/
+    context.lineJoin = "round";
+    context.lineWidth = 1;
+    
+    if (direction == 'up') {
+        path.push({x: left, y: bottom});
+        path.push({x: Math.ceil((right - left) / 2), y: top});
+        path.push({x: right, y: bottom});
+    } else if (direction == 'down') {
+        path.push({x: left, y: top});
+        path.push({x: Math.ceil((right - left) / 2), y: bottom});
+        path.push({x: right, y: top});
+    } else if (direction == 'left') {
+        path.push({x: left, y: top});
+        path.push({x: right, y: Math.ceil((bottom - top) / 2)});
+        path.push({x: left, y: bottom});
+    } else if (direction == 'right') {
+        path.push({x: right, y: top});
+        path.push({x: left, y: Math.ceil((bottom - top) / 2)});
+        path.push({x: right, y: bottom});
+    }
+    
+    context.beginPath();
+    for( let i = 0; i < path.length; i++) {
+        let point = path[i];
+        if( i == 0 ) {
+            context.moveTo(point.x, point.y);
+        } else {
+            context.lineTo(point.x, point.y);
+        }
+    }
+    context.closePath();
+    context.fillStyle = 'black';
+    context.fill();
+}
+
+
+function InitCanvas(width, height) {
+    var myCanvas = document.createElement('canvas');
+    
+    myCanvas.setAttribute('width', width);
+    myCanvas.setAttribute('height', height);
+    
+    return myCanvas;
+}
+
+
+function CreateArrow(direction, width, height) {
+    var canvas = InitCanvas(width, height);
+    var context = canvas.getContext("2d");
+    var img = document.createElement('img');
+    
+    DrawArrow(context, direction);
+    
+    img.src = canvas.toDataURL()
+    
+    return img;
+}
+
+
+function CreateNavImages() {
+    var imageList = new Array();
+    imageList.push({img: CreateArrow('left', 20, 20), element_name: 'left-arrow'});
+    imageList.push({img: CreateArrow('up', 12, 12), element_name: 'up-arrow'});
+    imageList.push({img: CreateArrow('down', 12, 12), element_name: 'dn-arrow'});
+    var elemList = null;
+    
+    imageList.forEach(function(elem) {
+        var elemList = document.getElementsByName(elem.element_name);
+        for( let i = 0; i < elemList.length; i++ ) {
+            elemList[i].appendChild(elem.img);
+        }
+    });
+}
+
+
+/*
+ * Initialization
+ */
+function InitApp() {
+    SetDateMaxValue();
+    CreateNavImages();
+}
+
+
+/* 
+ * Create a canvas to record the signature
+ */
+function CreateCanvas(container) {
+    return null;
+}
+
+
+/*
+ * Destroy the canvas
+ */
+function DestroyCanvas(container) {
+    return null;
+}
+
+
+        </script>
+    </head>
+    <body onload="InitApp();">
+        <div id="page1" class="docpage">
+            <h3>Section 1</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. 
+               Ut enimad minim veniam, quis nostrud exercitation ullamco laboris nisi utaliquip ex ea commodo consequat. Duis aute irure dolor 
+               inreprehenderit in voluptate velit esse cillum dolore eu fugiat nullapariatur. Excepteur sint occaecat cupidatat non proident, 
+               sunt inculpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipisicing elit, se.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. 
+               Ut enimad minim veniam, quis nostrud exercitation ullamco laboris nisi utaliquip ex ea commodo consequat. Duis aute irure dolor 
+               inreprehenderit in voluptate velit esse cillum dolore eu fugiat nullapariatur. Excepteur sint occaecat cupidatat non proident, 
+               sunt inculpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed 
+               doeiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enimad minim veniam, quis nostrud exercitation ullamco 
+               laboris nisi utaliquip ex ea commodo consequat. Duis aute irure dolor inreprehenderit in voluptate velit esse cillum dolore eu 
+               fugiat nullapariatur. Excepteur sint occaecat cupidatat non proident, sunt inculpa qui officia deserunt mollit anim id est 
+               laborum.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed doeiusmod tempor incididunt ut labore et dolore magna 
+               aliqua. Ut enimad minim veniam, quis nostrud exercitation ullamco laboris nisi utaliquip ex ea commodo consequat. Duis aute 
+               irure dolor inreprehenderit in voluptate velit esse cillum dolore eu fugiat nullapariatur. Excepteur sint occaecat cupidatat 
+               non proident, sunt inculpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipisicing 
+               elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enimad minim veniam, quis nostrud exercitation 
+               ullamco laboris nisi utaliquip ex ea commodo consequat. Duis aute irure dolor inreprehenderit in voluptate velit esse cillum 
+               dolore eu fugiat nullapariatur. Excepteur sint occaecat cupidatat non proident, sunt inculpa qui officia deserunt mollit anim 
+               id est laborum.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed doeiusmod tempor incididunt ut labore et dolore 
+               magna aliqua. Ut enimad minim veniam, quis nostrud exercitation ullamco laboris nisi utaliquip ex ea commodo consequat. 
+               Duis aute.</p>
+            <div name="signarea" class="signarea" is_signed="0">
+                <div name="signlabel" class="signlabel" style="">
+                    <table cellspacing="0" cellpadding="0" border="0">
+                        <tr>
+                            <td name="up-arrow" class="up-arrow"></td>
+                            <td name="labeltag" class="labeltag" rowspan="2">SIGN</td>
+                            <td name="left-arrow" class="left-arrow" rowspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td name="dn-arrow" class="dn-arrow"></td>
+                        </tr>
+                    </table>
+                </div> <!-- end signlabel -->
+                <div name="signblock" class="signblock">
+                    <div name="signature" class="signature"></div> <!-- end signature -->
+                    <input type="date" class="signdate" name="signdate" />
+                </div> <!-- end signblock -->
+            </div> <!-- end signarea -->
+        </div> <!-- end page -->
+    </body>
+</html>
