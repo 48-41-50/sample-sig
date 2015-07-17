@@ -29,6 +29,10 @@ body {
     @include diag-stripes(-60deg, #848484, 5px, #909090, 10px);
 }
 
+h2 {
+    font-family: sans-serif;
+}
+
 div.docpage {
     margin-left: auto;
     margin-right: auto;
@@ -129,7 +133,11 @@ div.docpage {
             }
             
             div.signature:hover {
-                border: 1px solid blue;
+                border: 1px solid #52A0C2;
+            }
+            
+            div.signature-active {
+                border: 3px inset #52A0C2;
             }
             
             .signdate {

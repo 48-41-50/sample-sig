@@ -2,6 +2,9 @@ body {
   background: -webkit-repeating-linear-gradient(-60deg, #848484, #848484 5px, #909090 5px, #909090 10px);
   background: repeating-linear-gradient(-60deg, #848484, #848484 5px, #909090 5px, #909090 10px); }
 
+h2 {
+  font-family: sans-serif; }
+
 div.docpage {
   margin-left: auto;
   margin-right: auto;
@@ -86,7 +89,9 @@ div.docpage {
         height: .8in;
         border: 1px solid black; }
       div.docpage div.signarea div.signblock div.signature:hover {
-        border: 1px solid blue; }
+        border: 1px solid #52A0C2; }
+      div.docpage div.signarea div.signblock div.signature-active {
+        border: 3px inset #52A0C2; }
       div.docpage div.signarea div.signblock .signdate {
         position: relative;
         top: 50%;
