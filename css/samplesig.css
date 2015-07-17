@@ -1,0 +1,103 @@
+body {
+  background: -webkit-repeating-linear-gradient(-60deg, #848484, #848484 5px, #909090 5px, #909090 10px);
+  background: repeating-linear-gradient(-60deg, #848484, #848484 5px, #909090 5px, #909090 10px); }
+
+div.docpage {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  width: 8in;
+  height: 11in;
+  background-color: white;
+  padding: .5in .75in;
+  border: 1px solid black;
+  position: relative; }
+  div.docpage div.signarea {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin-bottom: 100px; }
+    div.docpage div.signarea div.signlabel {
+      border-collapse: collapse;
+      position: absolute;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+      z-index: 10;
+      left: 2px; }
+      div.docpage div.signarea div.signlabel td {
+        text-align: center;
+        vertical-align: middle; }
+      div.docpage div.signarea div.signlabel td.up-arrow, div.docpage div.signarea div.signlabel td.dn-arrow {
+        border-collapse: collapse;
+        border-left: 1px solid black;
+        border-right: 1px solid black;
+        background-color: #A7A7A7; }
+      div.docpage div.signarea div.signlabel td.up-arrow:hover, div.docpage div.signarea div.signlabel td.dn-arrow:hover {
+        background-color: #F1BB20;
+        cursor: pointer; }
+      div.docpage div.signarea div.signlabel td.up-arrow {
+        border-top: 1px solid black; }
+      div.docpage div.signarea div.signlabel td.dn-arrow {
+        border-bottom: 1px solid black; }
+      div.docpage div.signarea div.signlabel td.labeltag {
+        border-collapse: collapse;
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+        border-right: 1px solid black;
+        font-family: sans-serif;
+        font-weight: bold;
+        padding: 2px 5px;
+        background-color: #DC432C; }
+      div.docpage div.signarea div.signlabel td.labeltag:hover {
+        background-color: #FA8371;
+        cursor: pointer; }
+      div.docpage div.signarea div.signlabel td.left-arrow {
+        border: 0px;
+        padding-left: 5px;
+        text-align: right; }
+    div.docpage div.signarea div.signblock {
+      background: -webkit-repeating-linear-gradient(-60deg, #E7ED66, #E7ED66 2px, #DCC941 2px, #DCC941 5px);
+      background: repeating-linear-gradient(-60deg, #E7ED66, #E7ED66 2px, #DCC941 2px, #DCC941 5px);
+      padding: 10px;
+      height: 1in;
+      width: 7.75in;
+      border: 1px solid black;
+      margin-left: auto;
+      margin-right: auto; }
+      div.docpage div.signarea div.signblock div.rec-sig-msg {
+        font-size: smaller;
+        position: absolute;
+        top: 2px;
+        left: 20px; }
+      div.docpage div.signarea div.signblock div.signature {
+        position: relative;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        background-color: white;
+        margin-left: 10px;
+        float: left;
+        width: 5in;
+        height: .8in;
+        border: 1px solid black; }
+      div.docpage div.signarea div.signblock div.signature:hover {
+        border: 1px solid blue; }
+      div.docpage div.signarea div.signblock .signdate {
+        position: relative;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        width: 2in;
+        height: .8in;
+        background-color: white;
+        border: 1px solid black;
+        margin-right: 10px;
+        float: right; }
+
+/*# sourceMappingURL=samplesig.css.map */
