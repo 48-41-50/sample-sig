@@ -25,6 +25,11 @@
 }
 
 
+.hide {
+    display: none;
+}
+
+
 body {
     @include diag-stripes(-60deg, #848484, 5px, #909090, 10px);
 }
@@ -115,11 +120,13 @@ div.docpage {
             margin-left: auto;
             margin-right: auto;
             
-            div.rec-sig-msg {
+            div.rec-sig-msg{
                 font-size: smaller;
+                font-family: sans-serif;
+                font-weight: bold;
                 position: absolute;
                 top: 2px;
-                left: 20px;
+                margin-left: 20px;
             }
             
             div.signature {

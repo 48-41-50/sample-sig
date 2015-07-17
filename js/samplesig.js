@@ -8,6 +8,17 @@ var signatureElements = null;
 var signatureDateElements = null;
 
 
+function ToArray(theList) {
+    var myArray = new Array()
+    
+    for (let i = 0; i < theList.length; i++) {
+        myArray.push(theList[i]);
+    }
+    
+    return myArray;
+}
+
+
 /*
  * Draw a triangular arrow in the context for the given direction.
  * direction is 'up', 'down', 'left', 'right'
@@ -113,9 +124,19 @@ function CreateNavImages() {
         var elemList = document.getElementsByName(elem.element_name);
         
         for( let i = 0; i < elemList.length; i++ ) {
+            let element = elemList[i];
+            let anchor = document.createElement('a');
             let img = document.createElement('img');
+            
+            anchor.setAttribute('name', elem.element_name + '-anchor');
+            if (elem.element_name.indexOf('up-') == 0) {
+                anchor.setAttribute('title', "Navigate to previous signature.");
+            } else if (elem.element_name.indexOf('dn-') == 0) {
+                anchor.setAttribute('title', "Navigate to next signature.");
+            }
             img.src = elem.data;
-            elemList[i].appendChild(img);
+            anchor.appendChild(img);
+            element.appendChild(anchor);
         }
     });
 }
@@ -131,16 +152,61 @@ function EnumerateElementIds(nodeList, prefix) {
 }
 
 
+/* 
+ * Read through all elements and set unique names for each based on the enumeration number
+ */
+function EnumerateElementNames(nodeList, prefix) {
+    for( let i = 0; i < nodeList.length; i++ ) {
+        nodeList[i].setAttribute('name', prefix + '-' + i.toString());
+    }
+}
+
+
+function SetNavAnchor(anchor, elNum, direction, target) {
+    var nextElNum = -1;
+    
+    if (direction === 'up') {
+        nextElNum = ((elNum === 0) ? signatureElements.length - 1 : elNum - 1);
+    } else {
+        nextElNum = ((elNum === (signatureElements.length - 1) ? 0 : elNum + 1));
+    }
+    
+    anchor.setAttribute('name', anchor.name + '-' + elNum.toString());
+    anchor.setAttribute('href', "#" + target + "-" + nextElNum.toString());
+}
+
+
+function SetNavigation() {
+    var uparrows = ToArray(document.getElementsByName('up-arrow-anchor'));
+    var downarrows = ToArray(document.getElementsByName('dn-arrow-anchor'));
+    
+    for (let i = 0; i < uparrows.length; i++) {
+        SetNavAnchor(uparrows[i], i, 'up', 'signblock-anchor');
+    }
+    
+    for (let i = 0; i < downarrows.length; i++) {
+        SetNavAnchor(downarrows[i], i, 'dn', 'signblock-anchor');
+    }
+}
+
+
 /*
  * Initialization of app page
  */
 function InitApp() {
-    CreateNavImages();
-    
-    signatureElements = document.getElementsByName("signature");
+    var signLabelElements = ToArray(document.getElementsByName("signblock-anchor"));
+    EnumerateElementIds(signLabelElements, 'signblock-anchor');
+    EnumerateElementNames(signLabelElements, 'signblock-anchor');
+    signatureElements = ToArray(document.getElementsByName("signature"));
     EnumerateElementIds(signatureElements, "signature");
-    signatureDateElements = document.getElementsByName("signdate");
+    EnumerateElementNames(signatureElements, "signature");
+    signatureDateElements = ToArray(document.getElementsByName("signdate"));
     EnumerateElementIds(signatureDateElements, "signdate");
+    EnumerateElementNames(signatureDateElements, "signdate");
+    EnumerateElementIds(document.getElementsByName('rec-sig-msg'), 'rec-sig-msg');
+    
+    CreateNavImages();
+    SetNavigation();
 }
 
 
@@ -167,6 +233,9 @@ function DestroyCanvas(container) {
 function InitSigAction(e) {
     var elem = document.getElementById(e.targetId);
     
+    if ((elem.name.indexOf('signblock-anchor-') == 0) || (elem.name.indexOf('signature-') == 0)) {
+        return null;
+    }
 }
 
 
