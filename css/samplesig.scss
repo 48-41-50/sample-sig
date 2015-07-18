@@ -38,6 +38,26 @@ h2 {
     font-family: sans-serif;
 }
 
+.no-scroll {
+    height: 100%;
+    overflow: hidden;
+}
+
+div.modal-background {
+    z-index: 10;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: #FFFFFF;
+    opacity: 0.6;
+}
+
+.sigcanvas:active {
+    cursor: poointer;
+}
+
 div.docpage {
     margin-left: auto;
     margin-right: auto;
@@ -56,11 +76,12 @@ div.docpage {
         left: 0;
         width: 100%;
         margin-bottom: 100px;
+        z-index: 20;
         
         div.signlabel {
             border-collapse: collapse;
             @include vertical-align-center(absolute);
-            z-index: 10;
+            z-index: 30;
             left: 2px;
             
             td {
@@ -139,15 +160,11 @@ div.docpage {
                 border: 1px solid black;
             }
             
-            div.signature:hover {
-                border: 1px solid #52A0C2;
-            }
-            
             div.signature-active {
                 border: 3px inset #52A0C2;
             }
             
-            .signdate {
+            div.signdate {
                 @include vertical-align-center(relative);
                 width: 2in;
                 height: .8in;
@@ -155,6 +172,15 @@ div.docpage {
                 border: 1px solid black;
                 margin-right: 10px;
                 float: right;
+                text-align: center;
+                vertical-align: middle;
+                font-size: larger;
+                font-weight: bold;
+                font-family: sans-serif;
+                
+                div.accepted-date {
+                    @include vertical-align-center(relative);
+                }
             }
         }
     }

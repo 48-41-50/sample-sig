@@ -6,7 +6,7 @@
         <script type="text/javascript" src="js/cookies.js"></script>
         <script type="text/javascript" src="js/samplesig.js"></script>
     </head>
-    <body onload="InitApp();">
+    <body id="body" onload="InitApp();">
         <div id="messages" class="messages"></div>
         <div id="page1" class="docpage">
             <h2>Section 1</h2>
@@ -48,7 +48,7 @@
                     <table cellspacing="0" cellpadding="0" border="0">
                         <tr>
                             <td name="up-arrow" class="up-arrow"></td>
-                            <td name="labeltag" class="labeltag" rowspan="2"><a name="labeltag-anchor" title="Click to sign.">SIGN</a></td>
+                            <td name="labeltag" class="labeltag" rowspan="2" ><a onclick="InitSigAction(this);" name="labeltag-anchor" title="Click to sign.">SIGN</a></td>
                             <td name="left-arrow" class="left-arrow" rowspan="2"></td>
                         </tr>
                         <tr>
@@ -58,10 +58,9 @@
                 </div> <!-- end signlabel -->
                 <a name="signblock-anchor">
                     <div name="signblock" class="signblock">
-                        <div class="hide" name="rec-sig-msg">Press &lt;Enter&gt; to accept or &lt;Esc&gt; to cancel.</div>
-                        <div name="signature" class="signature"></div> <!-- end signature -->
+                        <div class="rec-sig-msg hide" name="rec-sig-msg">Press &lt;Enter&gt; to accept or &lt;Esc&gt; to cancel.</div>
+                        <div name="signature" class="signature" paint="0"></div> <!-- end signature -->
                         <div name="signdate" class="signdate"></div> <!-- end signdate -->
-                        <input type="date" class="signdate" name="date_signed" style="display: none;"/>
                     </div> <!-- end signblock -->
                 </a>
             </div> <!-- end signarea -->
@@ -97,7 +96,7 @@
                     <table cellspacing="0" cellpadding="0" border="0">
                         <tr>
                             <td name="up-arrow" class="up-arrow"></td>
-                            <td name="labeltag" class="labeltag" rowspan="2"><a name="labeltag-anchor" title="Click to sign.">SIGN</a></td>
+                            <td name="labeltag" class="labeltag" rowspan="2" ><a name="labeltag-anchor" onclick="InitSigAction(this);" title="Click to sign.">SIGN</a></td>
                             <td name="left-arrow" class="left-arrow" rowspan="2"></td>
                         </tr>
                         <tr>
@@ -107,10 +106,9 @@
                 </div> <!-- end signlabel -->
                 <a name="signblock-anchor">
                     <div name="signblock" class="signblock">
-                        <div class="hide" name="rec-sig-msg">Press &lt;Enter&gt; to accept or &lt;Esc&gt; to cancel.</div>
-                        <div name="signature" class="signature"></div> <!-- end signature -->
+                        <div class="rec-sig-msg hide" name="rec-sig-msg">Press &lt;Enter&gt; to accept or &lt;Esc&gt; to cancel.</div>
+                        <div name="signature" class="signature" paint="0"></div> <!-- end signature -->
                         <div name="signdate" class="signdate"></div> <!-- end signdate -->
-                        <input type="date" class="signdate" name="date_signed" style="display: none;"/>
                     </div> <!-- end signblock -->
                 </a>
             </div> <!-- end signarea -->
@@ -139,7 +137,7 @@
                     <table cellspacing="0" cellpadding="0" border="0">
                         <tr>
                             <td name="up-arrow" class="up-arrow"></td>
-                            <td name="labeltag" class="labeltag" rowspan="2"><a name="labeltag-anchor" title="Click to sign.">SIGN</a></td>
+                            <td name="labeltag" class="labeltag" rowspan="2" ><a onclick="InitSigAction(this);" name="labeltag-anchor" title="Click to sign.">SIGN</a></td>
                             <td name="left-arrow" class="left-arrow" rowspan="2"></td>
                         </tr>
                         <tr>
@@ -149,10 +147,9 @@
                 </div> <!-- end signlabel -->
                 <a name="signblock-anchor">
                     <div name="signblock" class="signblock">
-                        <div class="hide" name="rec-sig-msg">Press &lt;Enter&gt; to accept or &lt;Esc&gt; to cancel.</div>
-                        <div name="signature" class="signature"></div> <!-- end signature -->
+                        <div class="rec-sig-msg hide" name="rec-sig-msg">Press &lt;Enter&gt; to accept or &lt;Esc&gt; to cancel.</div>
+                        <div name="signature" class="signature" paint="0"></div> <!-- end signature -->
                         <div name="signdate" class="signdate"></div> <!-- end signdate -->
-                        <input type="date" class="signdate" name="date_signed" style="display: none;"/>
                     </div> <!-- end signblock -->
                 </a>
             </div> <!-- end signarea -->

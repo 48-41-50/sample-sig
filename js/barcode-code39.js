@@ -1,11 +1,12 @@
 'use strict';
 
 
-function GenerateCode39Objects(code39) {
-    var sizeMap = {'B': '4px',
-                   'b': '2px',
-                   'S': '4px',
-                   's': '2px'};
+/*
+ * Create the spans representing the code 39 values
+ */
+function GenerateCode39Elements(code39, settings) {
+    var sizeMap = settings.sizeMap;
+    var colorMap = settings.colorMap;
     var code39Objs = [];
     var myObj = null;
     
@@ -17,11 +18,11 @@ function GenerateCode39Objects(code39) {
         myObj.style.borderRightWidth = '0px';
         myObj.style.borderTopWidth = '0px';
         myObj.style.borderBottomWidth = '0px';
-        myObj.style.height = '.5in';
+        myObj.style.height = settings.barcodeHeight.toString() + 'px';
         myObj.style.display = 'inline-block';
         
-        myObj.style.borderLeftColor = ( code.toUpperCase() == 'B' ) ? 'black' : 'white';
-        myObj.style.borderLeftWidth = sizeMap[code];
+        myObj.style.borderLeftColor = colorMap[code];
+        myObj.style.borderLeftWidth = sizeMap[code].toString() + 'px';
         
         code39Objs.push(myObj)
     }
@@ -30,6 +31,10 @@ function GenerateCode39Objects(code39) {
 }
 
 
+/*
+ * Encode the data string as the representable code 39 symbols and characters.
+ * Non-codable characters are translated into spaces.
+ */
 function Encode39(data) {
     var encoded = [];
     var sep = 's';
@@ -88,31 +93,145 @@ function Encode39(data) {
 
     encoded.push(code39Map['*'])
     
-    return encoded.join(code39Map[sep]);
+    return encoded.join(sep);
 }
 
 
-function GenerateCode39(data) {
+/*
+ * Create the div to contain the spans for code 39 based on settings 
+ * and call the function to create those spans.
+ */
+function GenerateCode39Spans(data, settings) {
+    var barcodeObjs = GenerateCode39Elements(data, settings);
     var barcodeContainer = document.createElement('div');
-    barcodeContainer.setAttribute('class', 'barcode-container');
-    var barcode = document.createElement('div');
-    barcode.class = "barcode-code";
-    var label = document.createElement('div');
-    label.class = "barcode-label"
-    var labelText = document.createElement('span');
-    labelText.setAttribute('class', 'barcode-label-text');
-    var barcodeObjs = GenerateCode39Objects(Encode39(data.toUpperCase()));
+    barcodeContainer.setAttribute('class', 'barcode-code39-container');
     
     barcodeObjs.forEach(function (elem) {
-        barcode.appendChild(elem);
+        barcodeContainer.appendChild(elem);
     });
     
-    labelText.innerHTML = "* " + data + " *";
-    label.appendChild(labelText);
-    barcodeContainer.appendChild(barcode);
-    barcodeContainer.appendChild(label);
+    return barcodeContainer
+}
+
+
+/*
+ * Determine the width of the canvas based on the width settings
+ */
+function GetCode39Width(data, settings) {
+    var sizeMap = settings.sizeMap;
+    var totalWidth = 0;
     
-    return barcodeContainer;
+    for (let i = 0; i < data.length; i++) {
+        let chr = data[i]
+        totalWidth += sizeMap[chr];
+    }
+    
+    return totalWidth;
+}
+
+
+/*
+ * Create the canvas and draw the code 39 barcode
+ */
+function GenerateCode39Canvas(data, settings) {
+    var canvasWidth = GetCode39Width(data, settings);
+    var canvasHeight = settings.barcodeHeight;
+    var canvas = document.createElement('canvas');
+    canvas.setAttribute('width', canvasWidth);
+    canvas.setAttribute('height', canvasHeight);
+    
+    var context = canvas.getContext('2d');
+    var sizeMap = settings.sizeMap;
+    var colorMap = settings.colorMap;
+    var curX = 0;
+    
+    context.fillStyle = 'white';
+    context.fillRect(0, 0, canvasWidth, canvasHeight);
+    
+    for (let i = 0; i < data.length; i++) {
+        var code = data[i];
+        var width = sizeMap[code];
+        var color = colorMap[code];
+        
+        context.fillStyle = color;
+        context.fillRect(curX, 0, width, canvasHeight);
+        
+        curX += width;
+    }
+    
+    return canvas;
+}
+
+
+/*
+ * GenerateCode39 : Generate a code 39 barcode
+ * Inputs:
+ *     data : Should be something that is representable as a string. 
+ *            Code 39 is limited and big, so don't make the data argument too long.
+ *     useCanvas : true  = Draw the code 39 barcode in a 2d canvas context.
+ *                 false = Return a dynamically created div containing synamically created spans
+ *                         representing the barcode.
+ *                 Default: true
+ *     returnImg : true =  Convert the canvas into a data URL and 
+ *                         make that the src of a dynamically created img element.
+ *                         Return the dynamically created img element.
+ *                 false = Return the dynamically created canvas element.
+ *                 Default: true if useCanvas == true, else false
+ *     settings : object
+ *                {
+ *                  widtBarWidth     : positive integer pixels  (default = 4)
+ *                  narrowBarWidth   : positive integer pixels  (default = 2)
+ *                  wideSpaceWidth   : positive integer pixels  (default = 4)
+ *                  narrowSpaceWidth : positive integer pixels  (default = 2)
+ *                  barcodeHeight    : positive integer pixels  (default = 36)
+ *                }
+ * Outputs:
+ *     canvas element or img element or div element on success based on inputs
+ *     null on no data
+ */
+function GenerateCode39(data, useCanvas, returnImg, settings) {
+    var mySettings = {};
+    var elem = null;
+    
+    if (settings === undefined || settings === null) settings = {};
+    if (useCanvas === undefined || useCanvas === null) useCanvas = true;
+    if (returnImg === undefined || returnImg === null) returnImg = true;
+    if (data === undefined || data === null) return null;
+    
+    if (useCanvas === false) returnImg = false;
+    
+    mySettings.wideBarWidth = settings.hasOwnProperty('wideBarWidth') ? settings.wideBarWidth : 4;
+    mySettings.narrowBarWidth = settings.hasOwnProperty('narrowBarWidth') ? settings.narrowBarWidth : 2;
+    mySettings.wideSpaceWidth = settings.hasOwnProperty('wideSpaceWidth') ? settings.wideSpaceWidth : 4;
+    mySettings.narrowSpaceWidth = settings.hasOwnProperty('narrowSpaceWidth') ? settings.narrowSpaceWidth : 2;
+    mySettings.barcodeHeight = settings.hasOwnProperty('barcodeHeight') ? settings.barcodeHeight : 36;
+    
+    /* set the sizemap */
+    mySettings.sizeMap = {B: mySettings.wideBarWidth,
+                          b: mySettings.narrowBarWidth,
+                          S: mySettings.wideSpaceWidth,
+                          s: mySettings.narrowSpaceWidth};
+    /* set colormap */
+    mySettings.colorMap = {B: 'black',
+                           b: 'black',
+                           S: 'white',
+                           s: 'white'};
+    
+    var myData = Encode39(data.toString().toUpperCase());
+    
+    if (useCanvas) {
+        let myCanvas = GenerateCode39Canvas(myData, mySettings);
+        if (returnImg) {
+            elem = document.createElement('img');
+            elem.src = myCanvas.toDataURL();
+        } else {
+            elem = myCanvas;
+        }
+    } else {
+        elem = GenerateCode39Spans(myData, mySettings);
+    }
+    
+    return elem;
 }
 
 
