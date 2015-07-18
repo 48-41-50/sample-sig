@@ -25,6 +25,9 @@ div.modal-background {
 .sigcanvas:active {
   cursor: poointer; }
 
+div.confirmpage {
+  display: none; }
+
 div.docpage {
   margin-left: auto;
   margin-right: auto;
@@ -36,6 +39,23 @@ div.docpage {
   padding: .5in .75in;
   border: 1px solid black;
   position: relative; }
+  div.docpage div.submit-doc {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin-bottom: 50px;
+    text-align: center;
+    display: block;
+    z-index: 20; }
+    div.docpage div.submit-doc a.submit-doc-link {
+      font-family: sans-serif;
+      font-weight: bold;
+      font-size: larger;
+      color: blue; }
+    div.docpage div.submit-doc a.submit-doc-link:hover {
+      cursor: pointer;
+      text-decoration: underline; }
   div.docpage div.signarea {
     position: absolute;
     bottom: 0;
@@ -136,5 +156,95 @@ div.docpage {
           -webkit-transform: translateY(-50%);
           -ms-transform: translateY(-50%);
           transform: translateY(-50%); }
+
+@media print {
+  div.submit-doc {
+    display: none; }
+    div.submit-doc a.submit-doc-link {
+      display: none; }
+
+  div.confirmpage {
+    display: block;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    background-color: white;
+    padding: .5in .75in;
+    font-size: 24pt; }
+    div.confirmpage div.barcode-container {
+      text-align: center; }
+      div.confirmpage div.barcode-container div.barcode-text {
+        font-family: sans-serif;
+        font-size: 14pt;
+        font-weight: bold;
+        letter-spacing: .5em; }
+
+  div.docpage {
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    background-color: white;
+    padding: .5in .75in;
+    page-break-before: always; }
+
+  div.signarea {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin-bottom: 100px;
+    z-index: 20; }
+    div.signarea div.signlabel {
+      display: none; }
+    div.signarea div.signblock {
+      background: -webkit-repeating-linear-gradient(-60deg, #E7ED66, #E7ED66 2px, #DCC941 2px, #DCC941 5px);
+      background: repeating-linear-gradient(-60deg, #E7ED66, #E7ED66 2px, #DCC941 2px, #DCC941 5px);
+      padding: 10px;
+      height: 1in;
+      width: 7.75in;
+      border: 0px;
+      margin-left: auto;
+      margin-right: auto; }
+      div.signarea div.signblock div.rec-sig-msg {
+        display: none; }
+      div.signarea div.signblock div.signature {
+        position: relative;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        background-color: white;
+        margin-left: 10px;
+        float: left;
+        width: 5in;
+        height: .8in;
+        border: 0px;
+        border-bottom: 1px solid black; }
+      div.signarea div.signblock div.signdate {
+        position: relative;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        width: 2in;
+        height: .8in;
+        background-color: white;
+        border: 0px;
+        border-bottom: 1px solid black;
+        margin-right: 10px;
+        float: right;
+        text-align: center;
+        vertical-align: middle;
+        font-size: larger;
+        font-weight: bold;
+        font-family: sans-serif; }
+        div.signarea div.signblock div.signdate div.accepted-date {
+          position: relative;
+          top: 50%;
+          -webkit-transform: translateY(-50%);
+          -ms-transform: translateY(-50%);
+          transform: translateY(-50%); } }
 
 /*# sourceMappingURL=samplesig.css.map */

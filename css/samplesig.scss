@@ -58,6 +58,10 @@ div.modal-background {
     cursor: poointer;
 }
 
+div.confirmpage {
+    display: none;
+}
+
 div.docpage {
     margin-left: auto;
     margin-right: auto;
@@ -69,6 +73,29 @@ div.docpage {
     padding: .5in .75in;
     border: 1px solid black;
     position: relative;
+    
+    div.submit-doc {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        margin-bottom: 50px;
+        text-align: center;
+        display: block;
+        z-index: 20;
+        
+        a.submit-doc-link {
+            font-family: sans-serif;
+            font-weight: bold;
+            font-size: larger;
+            color: blue;
+        }
+        
+        a.submit-doc-link:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    }
     
     div.signarea {
         position: absolute;
@@ -170,6 +197,106 @@ div.docpage {
                 height: .8in;
                 background-color: white;
                 border: 1px solid black;
+                margin-right: 10px;
+                float: right;
+                text-align: center;
+                vertical-align: middle;
+                font-size: larger;
+                font-weight: bold;
+                font-family: sans-serif;
+                
+                div.accepted-date {
+                    @include vertical-align-center(relative);
+                }
+            }
+        }
+    }
+}
+
+@media print {
+    div.submit-doc {
+        display: none;
+        
+        a.submit-doc-link {
+            display: none;
+        }
+    }
+    
+    div.confirmpage {
+        display: block;
+        margin-left: 0px;
+        margin-right: 0px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        background-color: white;
+        padding: .5in .75in;
+        font-size: 24pt;
+        
+        div.barcode-container {
+            text-align: center;
+            
+            div.barcode-text {
+                font-family: sans-serif;
+                font-size: 14pt;
+                font-weight: bold;
+                letter-spacing: .5em;
+            }
+        }
+    }
+    
+    div.docpage {
+        margin-left: 0px;
+        margin-right: 0px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        background-color: white;
+        padding: .5in .75in;
+        page-break-before: always;
+    }
+    
+    div.signarea {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        margin-bottom: 100px;
+        z-index: 20;
+        
+        div.signlabel {
+            display: none;
+        }
+        
+        div.signblock {
+            @include diag-stripes(-60deg, #E7ED66, 2px, #DCC941, 5px);
+            padding: 10px;
+            height: 1in;
+            width: 7.75in;
+            border: 0px;
+            margin-left: auto;
+            margin-right: auto;
+            
+            div.rec-sig-msg{
+                display: none;
+            }
+            
+            div.signature {
+                @include vertical-align-center(relative);
+                background-color: white;
+                margin-left: 10px;
+                float: left;
+                width: 5in;
+                height: .8in;
+                border: 0px;
+                border-bottom: 1px solid black;
+            }
+            
+            div.signdate {
+                @include vertical-align-center(relative);
+                width: 2in;
+                height: .8in;
+                background-color: white;
+                border: 0px;
+                border-bottom: 1px solid black;
                 margin-right: 10px;
                 float: right;
                 text-align: center;

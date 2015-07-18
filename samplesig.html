@@ -4,10 +4,18 @@
         <title>Sample Signature Web App</title>
         <link rel="stylesheet" href="css/samplesig.css" />
         <script type="text/javascript" src="js/cookies.js"></script>
+        <script type="text/javascript" src="js/barcode-code39.js"></script>
         <script type="text/javascript" src="js/samplesig.js"></script>
     </head>
     <body id="body" onload="InitApp();">
-        <div id="messages" class="messages"></div>
+        <div id="confirmation" class="hide">
+            <p>Your electronic signatures have been registered and your confirmation number is:</p>
+            <div class="barcode-container">
+                <div id="conf-barcode"></div>
+                <div id="conf-number" class="barcode-text"></div>
+            </div>
+            <p>Please retain this page for your records.</p>
+        </div>
         <div id="page1" class="docpage">
             <h2>Section 1</h2>
             <p>Donec eget nibh nisl. Morbi mattis augue sed massa rutrum pretium. Sed turpis enim, venenatis eu arcu id, egestas vulputate lacus. In 
@@ -66,7 +74,7 @@
             </div> <!-- end signarea -->
         </div> <!-- end page -->
         
-        <div id="page1" class="docpage">
+        <div id="page2" class="docpage">
             <h2>Section 2</h2>
             <p>Mauris lobortis, tellus quis convallis ultricies, ipsum mauris aliquet arcu, sed luctus ante mi id lorem. Mauris vel fermentum nibh, 
                ut commodo magna. Vivamus blandit imperdiet augue, fringilla posuere diam mollis eget. Morbi arcu tellus, molestie ut consequat a, 
@@ -114,7 +122,7 @@
             </div> <!-- end signarea -->
         </div> <!-- end page -->
         
-        <div id="page1" class="docpage">
+        <div id="page3" class="docpage">
             <h2>Section 3</h2>
             <p>Duis in orci aliquet tortor consequat maximus id a felis. Maecenas sit amet sem erat. Cras dictum tincidunt dolor quis tristique. Nunc 
                eget turpis laoreet, finibus elit vel, suscipit ex. Pellentesque tincidunt gravida congue. Nam cursus sapien vitae urna interdum 
@@ -153,6 +161,7 @@
                     </div> <!-- end signblock -->
                 </a>
             </div> <!-- end signarea -->
+            <div id="submit-doc" class="submit-doc"><a class="submit-doc-link" onclick="SubmitDocument();">SUBMIT DOCUMENT</a></div>
         </div> <!-- end page -->
     </body>
 </html>

@@ -25,6 +25,58 @@ function ToArray(theList) {
 }
 
 
+function ValidateSignedDocument() {
+    var totalToSign = signatureElements.length;
+    var totalSigned = 0;
+    var firstUnsigned = null;
+    var rc = true;
+    
+    signatureElements.forEach(function (sigElem) {
+        totalSigned += sigElem.is_signed;
+        if ((!sigElem.is_signed) && (firstUnsigned === null)) {
+            firstUnsigned = sigElem.element.getAttribute('name').split('-');
+            firstUnsigned = firstUnsigned[firstUnsigned.length - 1];
+        }
+    });
+    
+    if (totalSigned < totalToSign) {
+        rc = false;
+        var msg = "There are a total of " + totalToSign + " signature blocks.\nTotal signed: " + totalSigned + ".\n\nPlease sign the remaining blocks before sumitting the document.";
+        alert(msg);
+        var elem = document.getElementById('signblock-anchor-' + firstUnsigned);
+        elem.scrollIntoView();
+    }
+    
+    return rc;
+}
+
+
+function GenerateConfirmation() {
+    /* Not good, but good enough for this demo */
+    var r = (new Date()).getTime() * (((Math.random() * 100 | 0) + 1) % 100);
+    var img = GenerateCode39(r);
+    
+    return {barcode: img, text: r.toString()}
+}
+
+
+function SubmitDocument() {
+    if (ValidateSignedDocument()) {
+        var confirmation = GenerateConfirmation();
+        var elem = document.getElementById('conf-barcode');
+        elem.appendChild(confirmation.barcode);
+        elem = document.getElementById('conf-number');
+        elem.innerText = confirmation.text;
+        
+        elem = document.getElementById('confirmation');
+        elem.classList.remove('hide');
+        elem.classList.add('confirmpage');
+        
+        alert("Your e-signatures and dates have been registered.\nYour confirmation number is " + confirmation.text + ".\n You may now print a copy for your records.");
+    }
+}
+
+
 /*
  * Draw a triangular arrow in the context for the given direction.
  * direction is 'up', 'down', 'left', 'right'
@@ -210,6 +262,8 @@ function SetSignature(containerNum) {
     elem.classList.add('accepted-date');
     elem.innerText = docSigDate.toLocaleDateString();
     container.appendChild(elem);
+    
+    signatureElements[containerNum].is_signed = true;
 }
 
 
@@ -432,6 +486,9 @@ function InitApp() {
     signatureElements = ToArray(document.getElementsByName("signature"));
     EnumerateElementIds(signatureElements, "signature");
     EnumerateElementNames(signatureElements, "signature");
+    for( let i = 0; i < signatureElements.length; i++) {
+        signatureElements[i] = {element: signatureElements[i], is_signed: false};
+    }
     
     signatureDateElements = ToArray(document.getElementsByName("signdate"));
     EnumerateElementIds(signatureDateElements, "signdate");
@@ -444,6 +501,8 @@ function InitApp() {
     SetNavigation();
     
     window.addEventListener('keydown', KeyListener, true);
+    
+    alert("This is a demo of using canvas to record signature information as an e-signature.\nIt has been tested and works with chrome 43.0.2357.134.\nIt will probably not render properly in other browsers.\n\nClick the SIGN links to activate the drawing area. Draw with the mouse using the left mouse button. Otherwise, follow the document.\n Enjoy!");
 }
 
 
