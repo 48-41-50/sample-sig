@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sample Signature Web App</title>
+        <style type="text/css">
+.hide {
+  display: none; }
+
+body {
+  background: -webkit-repeating-linear-gradient(-60deg, #848484, #848484 5px, #909090 5px, #909090 10px);
+  background: repeating-linear-gradient(-60deg, #848484, #848484 5px, #909090 5px, #909090 10px); }
+
+h2 {
+  font-family: sans-serif; }
+
+.no-scroll {
+  height: 100%;
+  overflow: hidden; }
+
+div.modal-background {
+  z-index: 10;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: #FFFFFF;
+  opacity: 0.6; }
+
+.sigcanvas:active {
+  cursor: poointer; }
+
+div.confirmpage {
+  display: none; }
+
+div.docpage {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  width: 8in;
+  height: 11in;
+  background-color: white;
+  padding: .5in .75in;
+  border: 1px solid black;
+  position: relative; }
+  div.docpage div.submit-doc {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin-bottom: 50px;
+    text-align: center;
+    display: block;
+    z-index: 20; }
+    div.docpage div.submit-doc a.submit-doc-link {
+      font-family: sans-serif;
+      font-weight: bold;
+      font-size: larger;
+      color: blue; }
+    div.docpage div.submit-doc a.submit-doc-link:hover {
+      cursor: pointer;
+      text-decoration: underline; }
+  div.docpage div.signarea {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin-bottom: 100px;
+    z-index: 20; }
+    div.docpage div.signarea div.signlabel {
+      border-collapse: collapse;
+      position: absolute;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+      z-index: 30;
+      left: 2px; }
+      div.docpage div.signarea div.signlabel td {
+        text-align: center;
+        vertical-align: middle; }
+      div.docpage div.signarea div.signlabel td.up-arrow, div.docpage div.signarea div.signlabel td.dn-arrow {
+        border-collapse: collapse;
+        border-left: 1px solid black;
+        border-right: 1px solid black;
+        background-color: #A7A7A7; }
+      div.docpage div.signarea div.signlabel td.up-arrow:hover, div.docpage div.signarea div.signlabel td.dn-arrow:hover {
+        background-color: #F1BB20;
+        cursor: pointer; }
+      div.docpage div.signarea div.signlabel td.up-arrow {
+        border-top: 1px solid black; }
+      div.docpage div.signarea div.signlabel td.dn-arrow {
+        border-bottom: 1px solid black; }
+      div.docpage div.signarea div.signlabel td.labeltag {
+        border-collapse: collapse;
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+        border-right: 1px solid black;
+        font-family: sans-serif;
+        font-weight: bold;
+        padding: 2px 5px;
+        background-color: #DC432C; }
+      div.docpage div.signarea div.signlabel td.labeltag:hover {
+        background-color: #FA8371;
+        cursor: pointer; }
+      div.docpage div.signarea div.signlabel td.left-arrow {
+        border: 0px;
+        padding-left: 5px;
+        text-align: right; }
+    div.docpage div.signarea div.signblock {
+      background: -webkit-repeating-linear-gradient(-60deg, #E7ED66, #E7ED66 2px, #DCC941 2px, #DCC941 5px);
+      background: repeating-linear-gradient(-60deg, #E7ED66, #E7ED66 2px, #DCC941 2px, #DCC941 5px);
+      padding: 10px;
+      height: 1in;
+      width: 7.75in;
+      border: 1px solid black;
+      margin-left: auto;
+      margin-right: auto; }
+      div.docpage div.signarea div.signblock div.rec-sig-msg {
+        font-size: smaller;
+        font-family: sans-serif;
+        font-weight: bold;
+        position: absolute;
+        top: 2px;
+        margin-left: 20px; }
+      div.docpage div.signarea div.signblock div.signature {
+        position: relative;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        background-color: white;
+        margin-left: 10px;
+        float: left;
+        width: 5in;
+        height: .8in;
+        border: 1px solid black; }
+      div.docpage div.signarea div.signblock div.signature-active {
+        border: 3px inset #52A0C2; }
+      div.docpage div.signarea div.signblock div.signdate {
+        position: relative;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        width: 2in;
+        height: .8in;
+        background-color: white;
+        border: 1px solid black;
+        margin-right: 10px;
+        float: right;
+        text-align: center;
+        vertical-align: middle;
+        font-size: larger;
+        font-weight: bold;
+        font-family: sans-serif; }
+        div.docpage div.signarea div.signblock div.signdate div.accepted-date {
+          position: relative;
+          top: 50%;
+          -webkit-transform: translateY(-50%);
+          -ms-transform: translateY(-50%);
+          transform: translateY(-50%); }
+
+@media print {
+  div.submit-doc {
+    display: none; }
+    div.submit-doc a.submit-doc-link {
+      display: none; }
+
+  div.confirmpage {
+    display: block;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    background-color: white;
+    padding: .5in .75in;
+    font-size: 24pt; }
+    div.confirmpage div.barcode-container {
+      text-align: center; }
+      div.confirmpage div.barcode-container div.barcode-text {
+        font-family: sans-serif;
+        font-size: 14pt;
+        font-weight: bold;
+        letter-spacing: .5em; }
+
+  div.docpage {
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    background-color: white;
+    padding: .5in .75in;
+    page-break-before: always; }
+
+  div.signarea {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin-bottom: 100px;
+    z-index: 20; }
+    div.signarea div.signlabel {
+      display: none; }
+    div.signarea div.signblock {
+      background: -webkit-repeating-linear-gradient(-60deg, #E7ED66, #E7ED66 2px, #DCC941 2px, #DCC941 5px);
+      background: repeating-linear-gradient(-60deg, #E7ED66, #E7ED66 2px, #DCC941 2px, #DCC941 5px);
+      padding: 10px;
+      height: 1in;
+      width: 7.75in;
+      border: 0px;
+      margin-left: auto;
+      margin-right: auto; }
+      div.signarea div.signblock div.rec-sig-msg {
+        display: none; }
+      div.signarea div.signblock div.signature {
+        position: relative;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        background-color: white;
+        margin-left: 10px;
+        float: left;
+        width: 5in;
+        height: .8in;
+        border: 0px;
+        border-bottom: 1px solid black; }
+      div.signarea div.signblock div.signdate {
+        position: relative;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        width: 2in;
+        height: .8in;
+        background-color: white;
+        border: 0px;
+        border-bottom: 1px solid black;
+        margin-right: 10px;
+        float: right;
+        text-align: center;
+        vertical-align: middle;
+        font-size: larger;
+        font-weight: bold;
+        font-family: sans-serif; }
+        div.signarea div.signblock div.signdate div.accepted-date {
+          position: relative;
+          top: 50%;
+          -webkit-transform: translateY(-50%);
+          -ms-transform: translateY(-50%);
+          transform: translateY(-50%); } }
+
+        </style>
+        
+        <script type="text/javascript">
+"use strict";
+
+
+function createCookie(name, value, days) {
+    var expires;
+
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toGMTString();
+    } else {
+        expires = "";
+    }
+    document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + expires + "; path=/";
+}
+
+
+function readCookie(name) {
+    var nameEQ = encodeURIComponent(name) + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        for (var j = 0; (j < c.length) && (c.charAt(j) === ' '); j++);
+        if (j > 0) c = c.substring(j, c.length);
+        if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+    }
+    return null;
+}
+
+
+function eraseCookie(name) {
+    createCookie(name, "", -1);
+}
+
+
+function updateCookie(name, value, days) {
+    eraseCookie(name);
+    createCookie(name, value, days);
+}
+
+
+/*
+ * Create the spans representing the code 39 values
+ */
+function GenerateCode39Elements(code39, settings) {
+    var sizeMap = settings.sizeMap;
+    var colorMap = settings.colorMap;
+    var code39Objs = [];
+    var myObj = null;
+    
+    for( let i = 0; i < code39.length; i++ ) {
+        let code = code39[i];
+        
+        myObj = document.createElement('span');
+        myObj.style.borderLeftStyle = 'solid';
+        myObj.style.borderRightWidth = '0px';
+        myObj.style.borderTopWidth = '0px';
+        myObj.style.borderBottomWidth = '0px';
+        myObj.style.height = settings.barcodeHeight.toString() + 'px';
+        myObj.style.display = 'inline-block';
+        
+        myObj.style.borderLeftColor = colorMap[code];
+        myObj.style.borderLeftWidth = sizeMap[code].toString() + 'px';
+        
+        code39Objs.push(myObj)
+    }
+    
+    return code39Objs
+}
+
+
+/*
+ * Encode the data string as the representable code 39 symbols and characters.
+ * Non-codable characters are translated into spaces.
+ */
+function Encode39(data) {
+    var encoded = [];
+    var sep = 's';
+    var code39Map = {'A': 'BsbsbSbsB',
+                     'B': 'bsBsbSbsB',
+                     'C': 'BsBsbSbsb',
+                     'D': 'bsbsBSbsB',
+                     'E': 'BsbsBSbsb',
+                     'F': 'bsBsBSbsb',
+                     'G': 'bsbsbSBsB',
+                     'H': 'BsbsbSBsb',
+                     'I': 'bsBsbSBsb',
+                     'J': 'bsbsBSBsb',
+                     'K': 'BsbsbsbSB',
+                     'L': 'bsBsbsbSB',
+                     'M': 'BsBsbsbSb',
+                     'N': 'bsbsBsbSB',
+                     'O': 'BsbsBsbSB',
+                     'P': 'bsBsBsbSb',
+                     'Q': 'bsbsbsBSB',
+                     'R': 'BsbsbsBSb',
+                     'S': 'bsBsbsBSb',
+                     'T': 'bsbsBsBSb',
+                     'U': 'BSbsbsbsB',
+                     'V': 'bSBsbsbsB',
+                     'W': 'BSBsbsbsb',
+                     'X': 'bSbsBsbsB',
+                     'Y': 'BSbsBsbsb',
+                     'Z': 'bSBsBsbsb',
+                     '0': 'bsbSBsBsb',
+                     '1': 'BsbSbsbsB',
+                     '2': 'bsBSbsbsB',
+                     '3': 'BsBSbsbsb',
+                     '4': 'bsbSBsbsB',
+                     '5': 'BsbSBsbsb',
+                     '6': 'bsBSBsbsb',
+                     '7': 'bsbSbsBsB',
+                     '8': 'BsbSbsBsb',
+                     '9': 'bsBSbsBsb',
+                     '*': 'bSbsBsBsb',
+                     ' ': 'bSBsbsBsb',
+                     '-': 'bSbsbsBsB',
+                     '$': 'bSbSbSbsb',
+                     '%': 'bsbSbSbSb',
+                     '.': 'BSbsbsBsb',
+                     '/': 'bSbSbsbSb',
+                     '+': 'bSbsbSbSb'
+                     };
+    var scrubData = data.replace(/[^A-Z0-9 -+%\/\.\$]/, ' ');
+    
+    encoded.push(code39Map['*'])
+    
+    for( let i = 0; i < scrubData.length; i++ ) {
+        encoded.push(code39Map[scrubData[i]]);
+    }
+
+    encoded.push(code39Map['*'])
+    
+    return encoded.join(sep);
+}
+
+
+/*
+ * Create the div to contain the spans for code 39 based on settings 
+ * and call the function to create those spans.
+ */
+function GenerateCode39Spans(data, settings) {
+    var barcodeObjs = GenerateCode39Elements(data, settings);
+    var barcodeContainer = document.createElement('div');
+    barcodeContainer.setAttribute('class', 'barcode-code39-container');
+    
+    barcodeObjs.forEach(function (elem) {
+        barcodeContainer.appendChild(elem);
+    });
+    
+    return barcodeContainer
+}
+
+
+/*
+ * Determine the width of the canvas based on the width settings
+ */
+function GetCode39Width(data, settings) {
+    var sizeMap = settings.sizeMap;
+    var totalWidth = 0;
+    
+    for (let i = 0; i < data.length; i++) {
+        let chr = data[i]
+        totalWidth += sizeMap[chr];
+    }
+    
+    return totalWidth;
+}
+
+
+/*
+ * Create the canvas and draw the code 39 barcode
+ */
+function GenerateCode39Canvas(data, settings) {
+    var canvasWidth = GetCode39Width(data, settings);
+    var canvasHeight = settings.barcodeHeight;
+    var canvas = document.createElement('canvas');
+    canvas.setAttribute('width', canvasWidth);
+    canvas.setAttribute('height', canvasHeight);
+    
+    var context = canvas.getContext('2d');
+    var sizeMap = settings.sizeMap;
+    var colorMap = settings.colorMap;
+    var curX = 0;
+    
+    context.fillStyle = 'white';
+    context.fillRect(0, 0, canvasWidth, canvasHeight);
+    
+    for (let i = 0; i < data.length; i++) {
+        var code = data[i];
+        var width = sizeMap[code];
+        var color = colorMap[code];
+        
+        context.fillStyle = color;
+        context.fillRect(curX, 0, width, canvasHeight);
+        
+        curX += width;
+    }
+    
+    return canvas;
+}
+
+
+/*
+ * GenerateCode39 : Generate a code 39 barcode
+ * Inputs:
+ *     data : Should be something that is representable as a string. 
+ *            Code 39 is limited and big, so don't make the data argument too long.
+ *     useCanvas : true  = Draw the code 39 barcode in a 2d canvas context.
+ *                 false = Return a dynamically created div containing synamically created spans
+ *                         representing the barcode.
+ *                 Default: true
+ *     returnImg : true =  Convert the canvas into a data URL and 
+ *                         make that the src of a dynamically created img element.
+ *                         Return the dynamically created img element.
+ *                 false = Return the dynamically created canvas element.
+ *                 Default: true if useCanvas == true, else false
+ *     settings : object
+ *                {
+ *                  widtBarWidth     : positive integer pixels  (default = 4)
+ *                  narrowBarWidth   : positive integer pixels  (default = 2)
+ *                  wideSpaceWidth   : positive integer pixels  (default = 4)
+ *                  narrowSpaceWidth : positive integer pixels  (default = 2)
+ *                  barcodeHeight    : positive integer pixels  (default = 36)
+ *                }
+ * Outputs:
+ *     canvas element or img element or div element on success based on inputs
+ *     null on no data
+ */
+function GenerateCode39(data, useCanvas, returnImg, settings) {
+    var mySettings = {};
+    var elem = null;
+    
+    if (settings === undefined || settings === null) settings = {};
+    if (useCanvas === undefined || useCanvas === null) useCanvas = true;
+    if (returnImg === undefined || returnImg === null) returnImg = true;
+    if (data === undefined || data === null) return null;
+    
+    if (useCanvas === false) returnImg = false;
+    
+    mySettings.wideBarWidth = settings.hasOwnProperty('wideBarWidth') ? settings.wideBarWidth : 4;
+    mySettings.narrowBarWidth = settings.hasOwnProperty('narrowBarWidth') ? settings.narrowBarWidth : 2;
+    mySettings.wideSpaceWidth = settings.hasOwnProperty('wideSpaceWidth') ? settings.wideSpaceWidth : 4;
+    mySettings.narrowSpaceWidth = settings.hasOwnProperty('narrowSpaceWidth') ? settings.narrowSpaceWidth : 2;
+    mySettings.barcodeHeight = settings.hasOwnProperty('barcodeHeight') ? settings.barcodeHeight : 36;
+    
+    /* set the sizemap */
+    mySettings.sizeMap = {B: mySettings.wideBarWidth,
+                          b: mySettings.narrowBarWidth,
+                          S: mySettings.wideSpaceWidth,
+                          s: mySettings.narrowSpaceWidth};
+    /* set colormap */
+    mySettings.colorMap = {B: 'black',
+                           b: 'black',
+                           S: 'white',
+                           s: 'white'};
+    
+    var myData = Encode39(data.toString().toUpperCase());
+    
+    if (useCanvas) {
+        let myCanvas = GenerateCode39Canvas(myData, mySettings);
+        if (returnImg) {
+            elem = document.createElement('img');
+            elem.src = myCanvas.toDataURL();
+        } else {
+            elem = myCanvas;
+        }
+    } else {
+        elem = GenerateCode39Spans(myData, mySettings);
+    }
+    
+    return elem;
+}
+
+
+
+var docSigImg = null;
+var docSigDate = null;
+
+var paintActive = false;
+var signActive = false;
+var activeCanvas = null;
+var activeContext = null;
+var dirty = false;
+
+var signatureElements = null;
+var signatureDateElements = null;
+
+
+function ToArray(theList) {
+    var myArray = new Array()
+    
+    for (let i = 0; i < theList.length; i++) {
+        myArray.push(theList[i]);
+    }
+    
+    return myArray;
+}
+
+
+function ValidateSignedDocument() {
+    var totalToSign = signatureElements.length;
+    var totalSigned = 0;
+    var firstUnsigned = null;
+    var rc = true;
+    
+    signatureElements.forEach(function (sigElem) {
+        totalSigned += sigElem.is_signed;
+        if ((!sigElem.is_signed) && (firstUnsigned === null)) {
+            firstUnsigned = sigElem.element.getAttribute('name').split('-');
+            firstUnsigned = firstUnsigned[firstUnsigned.length - 1];
+        }
+    });
+    
+    if (totalSigned < totalToSign) {
+        rc = false;
+        var msg = "There are a total of " + totalToSign + " signature blocks.\nTotal signed: " + totalSigned + ".\n\nPlease sign the remaining blocks before sumitting the document.";
+        alert(msg);
+        var elem = document.getElementById('signblock-anchor-' + firstUnsigned);
+        elem.scrollIntoView();
+    }
+    
+    return rc;
+}
+
+
+function GenerateConfirmation() {
+    /* Not good, but good enough for this demo */
+    var r = (new Date()).getTime() * (((Math.random() * 100 | 0) + 1) % 100);
+    var img = GenerateCode39(r);
+    
+    return {barcode: img, text: r.toString()}
+}
+
+
+function SubmitDocument() {
+    if (ValidateSignedDocument()) {
+        var confirmation = GenerateConfirmation();
+        var elem = document.getElementById('conf-barcode');
+        elem.appendChild(confirmation.barcode);
+        elem = document.getElementById('conf-number');
+        elem.innerText = confirmation.text;
+        
+        elem = document.getElementById('confirmation');
+        elem.classList.remove('hide');
+        elem.classList.add('confirmpage');
+        
+        alert("Your e-signatures and dates have been registered.\nYour confirmation number is " + confirmation.text + ".\n You may now print a copy for your records.");
+    }
+}
+
+
+/*
+ * Draw a triangular arrow in the context for the given direction.
+ * direction is 'up', 'down', 'left', 'right'
+ *                2
+ *               / \
+ *              1---3
+ */
+function DrawArrow(context, direction, color) {
+    var left = 0;
+    var right = context.canvas.width - 1;
+    var top = 0;
+    var bottom = context.canvas.height - 1;
+              /* x  y */
+    var path = new Array();
+    
+    /*context.globalAlpha = 1;*/
+    context.lineJoin = "round";
+    context.lineWidth = 2;
+    
+    if (direction == 'up') {
+        path.push({x: left, y: bottom});
+        path.push({x: Math.ceil((right - left) / 2), y: top});
+        path.push({x: right, y: bottom});
+        path.push({x: left, y: bottom});
+    } else if (direction == 'down') {
+        path.push({x: left, y: top});
+        path.push({x: Math.ceil((right - left) / 2), y: bottom});
+        path.push({x: right, y: top});
+        path.push({x: left, y: top});
+    } else if (direction == 'left') {
+        path.push({x: left, y: top});
+        path.push({x: right, y: Math.ceil((bottom - top) / 2)});
+        path.push({x: left, y: bottom});
+        path.push({x: left, y: top});
+    } else if (direction == 'right') {
+        path.push({x: right, y: top});
+        path.push({x: left, y: Math.ceil((bottom - top) / 2)});
+        path.push({x: right, y: bottom});
+        path.push({x: right, y: top});
+    }
+    
+    context.beginPath();
+    for( let i = 0; i < path.length; i++) {
+        var point = path[i];
+        if( i == 0 ) {
+            context.moveTo(point.x, point.y);
+        } else {
+            context.lineTo(point.x, point.y);
+        }
+    }
+    context.closePath();
+    
+    context.fillStyle = color;
+    context.fill();
+    context.strokeStyle = "black";
+    context.stroke();
+}
+
+
+/*
+ * Create a canvas of the specified width and height
+ */
+function InitCanvas(width, height) {
+    var myCanvas = document.createElement('canvas');
+    
+    myCanvas.setAttribute('width', width);
+    myCanvas.setAttribute('height', height);
+    
+    return myCanvas;
+}
+
+
+/*
+ * If arrow data is not stored in cookie, create it, else 
+ * read cookie data and set that data as the image source.
+ */
+function CreateArrow(direction, width, height, color) {
+    var dataURL = readCookie(direction + '-arrow');
+    
+    if (dataURL === null) {
+        var canvas = InitCanvas(width, height);
+        var context = canvas.getContext("2d");
+        
+        DrawArrow(context, direction, color);
+        dataURL = canvas.toDataURL();
+        createCookie(direction + '-arrow', dataURL, 1);
+    }
+    
+    return dataURL;
+}
+
+
+/*
+ * Create dynamic images for arrows
+ */
+function CreateNavImages() {
+    var urlList = new Array();
+    urlList.push({data: CreateArrow('left', 20, 20, "#DC432C"), element_name: 'left-arrow'});
+    urlList.push({data: CreateArrow('up', 12, 12, "black"), element_name: 'up-arrow'});
+    urlList.push({data: CreateArrow('down', 12, 12, "black"), element_name: 'dn-arrow'});
+    
+    urlList.forEach(function(elem) {
+        var elemList = document.getElementsByName(elem.element_name);
+        
+        for( let i = 0; i < elemList.length; i++ ) {
+            var element = elemList[i];
+            var anchor = document.createElement('a');
+            var img = document.createElement('img');
+            
+            anchor.setAttribute('name', elem.element_name + '-anchor');
+            if (elem.element_name.indexOf('up-') == 0) {
+                anchor.setAttribute('title', "Navigate to previous signature.");
+            } else if (elem.element_name.indexOf('dn-') == 0) {
+                anchor.setAttribute('title', "Navigate to next signature.");
+            }
+            img.src = elem.data;
+            anchor.appendChild(img);
+            element.appendChild(anchor);
+        }
+    });
+}
+
+
+/* 
+ * Read through all elements and set unique ids for each based on the enumeration number
+ */
+function EnumerateElementIds(nodeList, prefix) {
+    for( let i = 0; i < nodeList.length; i++ ) {
+        nodeList[i].setAttribute('id', prefix + '-' + i.toString());
+    }
+}
+
+
+/* 
+ * Read through all elements and set unique names for each based on the enumeration number
+ */
+function EnumerateElementNames(nodeList, prefix) {
+    for( let i = 0; i < nodeList.length; i++ ) {
+        nodeList[i].setAttribute('name', prefix + '-' + i.toString());
+    }
+}
+
+
+function SetNavAnchor(anchor, elNum, direction, target) {
+    var nextElNum = -1;
+    
+    if (direction === 'up') {
+        nextElNum = ((elNum === 0) ? signatureElements.length - 1 : elNum - 1);
+    } else {
+        nextElNum = ((elNum === (signatureElements.length - 1) ? 0 : elNum + 1));
+    }
+    
+    anchor.setAttribute('name', anchor.name + '-' + elNum.toString());
+    anchor.setAttribute('id', anchor.name);
+    anchor.setAttribute('href', "#" + target + "-" + nextElNum.toString());
+    anchor.setAttribute('href_save', "#" + target + "-" + nextElNum.toString());
+}
+
+
+function SetNavigation() {
+    var uparrows = ToArray(document.getElementsByName('up-arrow-anchor'));
+    var downarrows = ToArray(document.getElementsByName('dn-arrow-anchor'));
+    
+    for (let i = 0; i < uparrows.length; i++) {
+        SetNavAnchor(uparrows[i], i, 'up', 'signblock-anchor');
+    }
+    
+    for (let i = 0; i < downarrows.length; i++) {
+        SetNavAnchor(downarrows[i], i, 'dn', 'signblock-anchor');
+    }
+}
+
+
+function SetSignature(containerNum) {
+    var container = document.getElementById('signature-' + containerNum.toString());
+    
+    var elem = document.createElement('img');
+    elem.src = docSigImg;
+    container.appendChild(elem);
+    
+    container = document.getElementById('signdate-' + containerNum.toString());
+    elem = document.createElement('div');
+    elem.classList.add('accepted-date');
+    elem.innerText = docSigDate.toLocaleDateString();
+    container.appendChild(elem);
+    
+    signatureElements[containerNum].is_signed = true;
+}
+
+
+function StopNav(idNum) {
+    var navElem = document.getElementById('up-arrow-anchor-' + idNum.toString());
+    navElem.removeAttribute('href');
+    navElem = document.getElementById('dn-arrow-anchor-' + idNum.toString());
+    navElem.removeAttribute('href');
+}
+
+
+function StartNav(idNum) {
+    var navElem = document.getElementById('up-arrow-anchor-' + idNum.toString());
+    navElem.setAttribute('href', navElem.getAttribute("href_save"));
+    navElem = document.getElementById('dn-arrow-anchor-' + idNum.toString());
+    navElem.setAttribute('href', navElem.getAttribute("href_save"));
+}
+
+
+function AcceptSignature() {
+    if (signActive && activeCanvas) {
+        var myCanvas = activeCanvas;
+        var myContainer = myCanvas.parentElement;
+        var myContainerNum = myContainer.id.split('-');
+        myContainerNum = Number(myContainerNum[myContainerNum.length - 1]);
+        var myMsg = document.getElementById('rec-sig-msg-' + myContainerNum.toString());
+        
+        activeCanvas = null;
+        activeContext = null;
+        paintActive = false;
+        signActive = false;
+        
+        docSigImg = myCanvas.toDataURL();
+        docSigDate = new Date();
+        
+        createCookie("document-signature", docSigImg, 1);
+        createCookie("document-signed-date", docSigDate.toUTCString(), 1);
+        
+        myContainer.removeChild(myCanvas);
+        myMsg.classList.add('hide');
+        
+        SetSignature(myContainerNum);
+        
+        ClearModal();
+        StartNav(myContainerNum);
+    }
+}
+
+
+function RejectSignature() {
+    if (signActive && activeCanvas) {
+        var myCanvas = activeCanvas;
+        var myContainer = myCanvas.parentElement;
+        var myContainerNum = myContainer.id.split('-');
+        myContainerNum = Number(myContainerNum[myContainerNum.length - 1]);
+        var myMsg = document.getElementById('rec-sig-msg-' + myContainerNum.toString());
+        
+        activeCanvas = null;
+        activeContext = null;
+        paintActive = false;
+        signActive = false;
+        
+        docSigImg = null;
+        docSigDate = null;
+        
+        eraseCookie('document-signature');
+        eraseCookie('document-signed-date');
+        
+        myContainer.removeChild(myCanvas);
+        myMsg.classList.add('hide');
+        
+        ClearModal();
+        StartNav(myContainerNum);
+    }
+}
+
+
+/*
+ * Key listener for accept or cancel
+ */
+function KeyListener(e) {
+    if (! e.defaultPrevented) {
+        if (signActive) {
+            e.preventDefault();
+            
+            switch(e.key || e.keyCode) {
+                case "Enter":
+                case 13:
+                    if (dirty) {
+                        AcceptSignature();
+                    }
+                    break;
+                    
+                case "Escape":
+                case 27:
+                    RejectSignature();
+                    break;
+                
+                default:
+                    break;
+            }
+        }
+    }
+    
+    return;
+}
+
+
+/* 
+ * Create a canvas to record the signature
+ */
+function CreateCanvas(container) {
+    activeCanvas = document.createElement('canvas');
+    activeCanvas.setAttribute('height', container.clientHeight);
+    activeCanvas.setAttribute('width', container.clientWidth);
+    activeCanvas.classList.add('signcanvas');
+    activeContext = activeCanvas.getContext('2d');
+    activeContext.beginPath();
+    activeContext.lineWidth = 2;
+    activeContext.lineJoin = 'round';
+    activeContext.strokeStyle = 'black';
+    
+    var TraceDrag = function (e) {
+        if (paintActive) {
+            activeContext.lineTo(e.offsetX, e.offsetY);
+            activeContext.stroke();
+            dirty = true;
+            
+            if (e.type == "mouseleave") {
+                paintActive = false;
+            }
+        }
+    };
+    
+    activeCanvas.onmousedown = function (e) {
+        if (e.button === 0) {
+            paintActive = true;
+            activeContext.moveTo(e.offsetX, e.offsetY);
+        }
+    };
+    
+    activeCanvas.onmouseup = function (e) {
+        if (e.button === 0) {
+            if (paintActive) {
+                activeContext.lineTo(e.offsetX, e.offsetY);
+                activeContext.stroke();
+                dirty = true;
+                
+                paintActive = false;
+            }
+        }
+    };
+    
+    activeCanvas.onmousemove = TraceDrag;
+    activeCanvas.onmouseleave = TraceDrag;
+    
+    container.appendChild(activeCanvas);
+}
+
+
+function SetModal() {
+    var body = document.getElementById('body');
+    var modal = document.createElement('div');
+    body.classList.add('no-scroll');
+    modal.classList.add('modal-background');
+    modal.setAttribute('id', 'modal-background');
+    body.appendChild(modal);
+}
+
+
+function ClearModal() {
+    var body = document.getElementById('body');
+    var modal = document.getElementById('modal-background');
+    body.removeChild(modal);
+    body.classList.remove('no-scroll');
+}
+
+
+/*
+ * Event handler for initializing the canvas for signature drawing.
+ * If the signature has been recorded, then set a copy of the image in the signing area.
+ */
+function InitSigAction(anchor) {
+    var idNum = anchor.id.split('-');
+    idNum = Number(idNum[idNum.length - 1]);
+    var myMsg = document.getElementById('rec-sig-msg-' + idNum.toString());
+    
+    if (docSigImg !== null) {
+        if (!signatureElements[idNum].is_signed) {
+            SetSignature(idNum);
+        } // else already signed
+    } else {
+        SetModal();
+        StopNav(idNum);
+        
+        var sigDiv = document.getElementById('signature-' + idNum.toString());
+        myMsg.classList.remove('hide');
+        CreateCanvas(sigDiv);
+        signActive = true;
+    }
+}
+
+
+/*
+ * Initialization of app page
+ */
+function InitApp() {
+    var cookie = null;
+    cookie = readCookie('document-signature');
+    if (cookie !== null) {
+        docSigImg = cookie;
+    }
+    cookie = readCookie('document-signed-date');
+    if (cookie !== null) {
+        docSigDate = new Date(cookie);
+    }
+    
+    var signLabelElements = ToArray(document.getElementsByName("signblock-anchor"));
+    EnumerateElementIds(signLabelElements, 'signblock-anchor');
+    EnumerateElementNames(signLabelElements, 'signblock-anchor');
+    
+    signatureElements = ToArray(document.getElementsByName("signature"));
+    EnumerateElementIds(signatureElements, "signature");
+    EnumerateElementNames(signatureElements, "signature");
+    for( let i = 0; i < signatureElements.length; i++) {
+        signatureElements[i] = {element: signatureElements[i], is_signed: false};
+    }
+    
+    signatureDateElements = ToArray(document.getElementsByName("signdate"));
+    EnumerateElementIds(signatureDateElements, "signdate");
+    EnumerateElementNames(signatureDateElements, "signdate");
+    
+    EnumerateElementIds(document.getElementsByName('rec-sig-msg'), 'rec-sig-msg');
+    EnumerateElementIds(document.getElementsByName("labeltag-anchor"), 'labeltag-anchor');
+    
+    CreateNavImages();
+    SetNavigation();
+    
+    window.addEventListener('keydown', KeyListener, true);
+    
+    alert("This is a demo of using canvas to record signature information as an e-signature.\nIt has been tested and works with chrome 43.0.2357.134.\nIt will probably not render properly in other browsers.\n\nClick the SIGN links to activate the drawing area. Draw with the mouse using the left mouse button. Otherwise, follow the document.\n Enjoy!");
+}
+
+        </script>
+    </head>
+    <body id="body" onload="InitApp();">
+        <div id="confirmation" class="hide">
+            <p>Your electronic signatures have been registered and your confirmation number is:</p>
+            <div class="barcode-container">
+                <div id="conf-barcode"></div>
+                <div id="conf-number" class="barcode-text"></div>
+            </div>
+            <p>Please retain this page for your records.</p>
+        </div>
+        <div id="page1" class="docpage">
+            <h2>Section 1</h2>
+            <p>Donec eget nibh nisl. Morbi mattis augue sed massa rutrum pretium. Sed turpis enim, venenatis eu arcu id, egestas vulputate lacus. In 
+               hac habitasse platea dictumst. Maecenas eu blandit nibh. Nullam urna metus, viverra sed odio eget, pellentesque scelerisque leo. 
+               Mauris auctor tristique suscipit.</p>
+            <p>Quisque nibh nibh, scelerisque non nulla vel, ornare accumsan leo. Aenean hendrerit dui eget dignissim congue. Ut suscipit, neque 
+               placerat commodo vehicula, est diam lacinia ex, nec suscipit ipsum magna eget justo. Ut sagittis nulla et velit mollis, eget imperdiet 
+               felis luctus. Nullam et mollis neque. Phasellus non consectetur nunc, in pulvinar magna. Curabitur eleifend euismod velit, ullamcorper 
+               laoreet orci commodo eu. Aenean sagittis libero vitae lectus finibus bibendum et eget dui. Ut augue nulla, auctor quis sapien vitae, 
+               viverra pulvinar libero. Nullam tincidunt mi purus, ac scelerisque lorem vehicula sed. Ut eleifend efficitur auctor.</p>
+            <p>Quisque vitae molestie massa. Integer dapibus odio eget orci faucibus mollis. Integer nunc ipsum, commodo ut malesuada a, congue id 
+               risus. Vestibulum vulputate purus mauris, ac porta felis posuere a. Ut auctor mollis cursus. Fusce vel tellus vel turpis pretium 
+               interdum nec luctus massa. Praesent quis lacus turpis. Curabitur efficitur ultrices orci in consequat.</p>
+            <p>Sed velit arcu, vehicula a ante a, sodales vestibulum velit. Duis sit amet ex suscipit, convallis nibh ac, tempus odio. Sed 
+               ullamcorper porttitor risus, at finibus nulla fringilla at. Vivamus sagittis nulla sapien. Sed vitae fringilla urna. Suspendisse 
+               viverra auctor dignissim. Proin sit amet leo urna. Donec euismod tempus ex sed semper.</p>
+            <p>Nunc tincidunt felis quis ultricies malesuada. Morbi euismod vitae mi a bibendum. Etiam augue lorem, scelerisque sed tempus id, 
+               facilisis sit amet purus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam erat volutpat. Sed nulla ante, 
+               hendrerit ut iaculis aliquet, ullamcorper vel nunc. Proin efficitur ultricies nibh, id lacinia dui dignissim in. Suspendisse congue 
+               cursus mauris, maximus laoreet ex facilisis ut. Integer scelerisque orci ornare orci ornare, nec mattis erat aliquet. In pretium nulla 
+               non diam dapibus, quis sollicitudin sapien porttitor. Mauris tincidunt condimentum lacus at gravida. Aliquam feugiat ut urna at 
+               pharetra. Aenean gravida, urna in aliquet bibendum, leo sem lobortis arcu, a blandit risus velit ac nulla. Quisque ac dui eleifend, 
+               elementum lorem in, condimentum odio. Pellentesque tellus nunc, sagittis sit amet lectus eu, vestibulum pretium erat. Nam ac tellus a 
+               purus ornare faucibus eget mollis felis.</p>
+            <p>Ut pharetra lacus lectus, a hendrerit dui rhoncus sed. Praesent accumsan suscipit varius. Curabitur suscipit scelerisque nulla id 
+               imperdiet. Proin convallis est non elit congue scelerisque. Vivamus lacinia ex lacus, non venenatis elit vehicula eu. Vestibulum 
+               vestibulum vestibulum tempus. In aliquet ornare mi, in sagittis quam malesuada at. Morbi eget nisi et nulla congue tristique eget 
+               vitae orci. Sed vulputate pretium dolor, sit amet maximus enim tincidunt nec. Etiam arcu tellus, pellentesque vel viverra et, 
+               porttitor non nibh. Duis viverra dignissim nibh, feugiat ornare dui tristique aliquam. Integer sed rhoncus libero. Nullam posuere 
+               lorem pulvinar elit consequat, in efficitur justo fermentum. Suspendisse molestie vestibulum dapibus. Pellentesque ut ornare dui.</p>
+            <p>Vivamus ut cursus quam. Curabitur feugiat eleifend nibh, blandit mattis velit dapibus vel. Morbi finibus finibus accumsan. 
+               Pellentesque dolor augue, scelerisque nec facilisis venenatis, rhoncus sollicitudin felis. Morbi at enim sit amet leo eleifend varius. 
+               Pellentesque id est vel sem ullamcorper feugiat non vel nisi. Praesent sodales mattis massa in mollis. Nullam et ultricies tellus. 
+               Morbi posuere risus lectus, et sodales ligula sollicitudin sed. Nunc pretium nulla vel convallis euismod. Cras pharetra diam ut nulla 
+               mattis commodo.</p>
+            <div name="signarea" class="signarea" is_signed="0">
+                <div name="signlabel" class="signlabel" style="">
+                    <table cellspacing="0" cellpadding="0" border="0">
+                        <tr>
+                            <td name="up-arrow" class="up-arrow"></td>
+                            <td name="labeltag" class="labeltag" rowspan="2" ><a onclick="InitSigAction(this);" name="labeltag-anchor" title="Click to sign.">SIGN</a></td>
+                            <td name="left-arrow" class="left-arrow" rowspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td name="dn-arrow" class="dn-arrow"></td>
+                        </tr>
+                    </table>
+                </div> <!-- end signlabel -->
+                <a name="signblock-anchor">
+                    <div name="signblock" class="signblock">
+                        <div class="rec-sig-msg hide" name="rec-sig-msg">Press &lt;Enter&gt; to accept or &lt;Esc&gt; to cancel.</div>
+                        <div name="signature" class="signature" paint="0"></div> <!-- end signature -->
+                        <div name="signdate" class="signdate"></div> <!-- end signdate -->
+                    </div> <!-- end signblock -->
+                </a>
+            </div> <!-- end signarea -->
+        </div> <!-- end page -->
+        
+        <div id="page2" class="docpage">
+            <h2>Section 2</h2>
+            <p>Mauris lobortis, tellus quis convallis ultricies, ipsum mauris aliquet arcu, sed luctus ante mi id lorem. Mauris vel fermentum nibh, 
+               ut commodo magna. Vivamus blandit imperdiet augue, fringilla posuere diam mollis eget. Morbi arcu tellus, molestie ut consequat a, 
+               auctor nec libero. Phasellus sit amet ex tempor, semper quam sit amet, aliquam lacus. Sed at magna massa. Phasellus nec suscipit 
+               dolor. Vestibulum nec tellus rutrum, luctus eros sed, tempus lacus. Maecenas dolor leo, pulvinar ut gravida a, facilisis sed est. 
+               Morbi vestibulum nec massa vel pellentesque. Suspendisse at rutrum quam. Nulla risus nisi, luctus eu nisl ut, facilisis molestie 
+               enim. Praesent elit felis, dapibus ac nunc quis, scelerisque pharetra odio. Etiam ultrices laoreet erat a pellentesque. Quisque quis 
+               blandit purus.</p>
+            <p>Morbi accumsan pharetra leo, at tincidunt odio rhoncus id. Integer vestibulum libero at sollicitudin pharetra. Vestibulum enim est, 
+               congue at odio ac, ultrices faucibus libero. In et dignissim purus, in finibus nibh. Sed at neque suscipit ex sagittis tincidunt. 
+               Proin et tristique dui. Quisque nulla dolor, tempor id massa et, accumsan auctor ipsum.</p>
+            <p>Duis sollicitudin congue felis at bibendum. Quisque orci lorem, egestas a libero a, semper congue lorem. Praesent fermentum vehicula 
+               venenatis. Suspendisse aliquam arcu purus, nec rutrum eros tempus ut. Duis convallis, erat vitae molestie mattis, leo neque vehicula 
+               justo, non malesuada risus tortor at quam. Proin lectus sem, tincidunt convallis mauris nec, commodo dignissim justo. Donec consectetur 
+               quis dolor accumsan aliquet. Nam ut cursus erat, a euismod justo.</p>
+            <p>Cras efficitur lorem sed nunc lacinia porttitor. Nullam tempor volutpat vulputate. Aliquam erat volutpat. Integer quis dignissim orci. 
+               Integer tincidunt tincidunt diam, sed mollis arcu condimentum ac. Phasellus vitae luctus orci, lobortis suscipit mi. Nulla aliquet 
+               rhoncus sapien sit amet condimentum. Phasellus ut vehicula tortor, in luctus risus. Cras quis tincidunt leo. Sed et urna sit amet 
+               augue faucibus eleifend. Phasellus mauris velit, feugiat sed accumsan eget, tristique tempor massa. Pellentesque dolor augue, 
+               tincidunt ut est et, faucibus varius libero.</p>
+            <p>Nulla ultricies arcu mi, sed posuere urna consectetur vel. Quisque a turpis felis. Cras molestie hendrerit sem in placerat. Donec ac 
+               malesuada risus, ut pretium eros. Etiam at mattis felis. Aliquam posuere faucibus malesuada. Quisque blandit ligula mauris, eu 
+               pellentesque orci fermentum elementum. Ut a erat a risus rhoncus porttitor id suscipit ex. Cum sociis natoque penatibus et magnis dis 
+               parturient montes, nascetur ridiculus mus. Cras feugiat dui tempus odio tempor, semper porta elit ultricies.</p>
+            <div name="signarea" class="signarea" is_signed="0">
+                <div name="signlabel" class="signlabel" style="">
+                    <table cellspacing="0" cellpadding="0" border="0">
+                        <tr>
+                            <td name="up-arrow" class="up-arrow"></td>
+                            <td name="labeltag" class="labeltag" rowspan="2" ><a name="labeltag-anchor" onclick="InitSigAction(this);" title="Click to sign.">SIGN</a></td>
+                            <td name="left-arrow" class="left-arrow" rowspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td name="dn-arrow" class="dn-arrow"></td>
+                        </tr>
+                    </table>
+                </div> <!-- end signlabel -->
+                <a name="signblock-anchor">
+                    <div name="signblock" class="signblock">
+                        <div class="rec-sig-msg hide" name="rec-sig-msg">Press &lt;Enter&gt; to accept or &lt;Esc&gt; to cancel.</div>
+                        <div name="signature" class="signature" paint="0"></div> <!-- end signature -->
+                        <div name="signdate" class="signdate"></div> <!-- end signdate -->
+                    </div> <!-- end signblock -->
+                </a>
+            </div> <!-- end signarea -->
+        </div> <!-- end page -->
+        
+        <div id="page3" class="docpage">
+            <h2>Section 3</h2>
+            <p>Duis in orci aliquet tortor consequat maximus id a felis. Maecenas sit amet sem erat. Cras dictum tincidunt dolor quis tristique. Nunc 
+               eget turpis laoreet, finibus elit vel, suscipit ex. Pellentesque tincidunt gravida congue. Nam cursus sapien vitae urna interdum 
+               imperdiet. Donec vehicula urna id congue dictum. Nulla dictum erat vel gravida semper. Suspendisse at turpis vitae nulla aliquam 
+               laoreet. Quisque vitae pellentesque orci. Pellentesque condimentum vestibulum quam, et molestie metus. Fusce gravida leo vel arcu 
+               rhoncus feugiat. Integer convallis sit amet nisl vel congue. Nullam enim arcu, venenatis non felis et, ornare tempor turpis. Phasellus 
+               nec dapibus urna. Curabitur id justo pretium, maximus metus id, mattis nulla.</p>
+            <p>Vestibulum quis interdum dui. Phasellus eget sapien vitae velit cursus consectetur eu sit amet mauris. In pellentesque placerat lorem 
+               quis rutrum. Aliquam sed metus eu dolor lobortis aliquet. Suspendisse placerat, tortor et posuere hendrerit, justo justo mattis erat, 
+               non dignissim mauris leo vitae odio. Nulla ornare euismod purus, quis pulvinar mauris ornare ultrices. Sed vitae metus leo. Quisque 
+               vitae luctus ipsum, non dapibus lacus. In hac habitasse platea dictumst. Phasellus ultricies nulla elementum erat laoreet, vel 
+               sollicitudin arcu vulputate. In feugiat at nunc nec molestie. Cras laoreet magna a luctus consequat. Morbi sed ornare turpis, 
+               efficitur tempus quam.</p>
+            <p>Aenean tortor purus, lobortis semper arcu in, sagittis auctor ligula. Praesent iaculis elit a dolor mollis auctor. Suspendisse sem 
+               arcu, euismod in massa at, commodo eleifend elit. Aenean tempus felis nulla, non dignissim lectus scelerisque sed. Sed bibendum mi in 
+               enim gravida, eget dignissim lectus finibus. Donec pulvinar, risus non efficitur facilisis, orci est porttitor libero, tempus ultrices 
+               leo orci ac elit. Nulla facilisi.</p>
+            <div name="signarea" class="signarea" is_signed="0">
+                <div name="signlabel" class="signlabel" style="">
+                    <table cellspacing="0" cellpadding="0" border="0">
+                        <tr>
+                            <td name="up-arrow" class="up-arrow"></td>
+                            <td name="labeltag" class="labeltag" rowspan="2" ><a onclick="InitSigAction(this);" name="labeltag-anchor" title="Click to sign.">SIGN</a></td>
+                            <td name="left-arrow" class="left-arrow" rowspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td name="dn-arrow" class="dn-arrow"></td>
+                        </tr>
+                    </table>
+                </div> <!-- end signlabel -->
+                <a name="signblock-anchor">
+                    <div name="signblock" class="signblock">
+                        <div class="rec-sig-msg hide" name="rec-sig-msg">Press &lt;Enter&gt; to accept or &lt;Esc&gt; to cancel.</div>
+                        <div name="signature" class="signature" paint="0"></div> <!-- end signature -->
+                        <div name="signdate" class="signdate"></div> <!-- end signdate -->
+                    </div> <!-- end signblock -->
+                </a>
+            </div> <!-- end signarea -->
+            <div id="submit-doc" class="submit-doc"><a class="submit-doc-link" onclick="SubmitDocument();">SUBMIT DOCUMENT</a></div>
+        </div> <!-- end page -->
+    </body>
+</html>
+
+

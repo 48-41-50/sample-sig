@@ -452,7 +452,9 @@ function InitSigAction(anchor) {
     var myMsg = document.getElementById('rec-sig-msg-' + idNum.toString());
     
     if (docSigImg !== null) {
-        SetSignature(idNum);
+        if (!signatureElements[idNum].is_signed) {
+            SetSignature(idNum);
+        } // else already signed
     } else {
         SetModal();
         StopNav(idNum);

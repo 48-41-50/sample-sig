@@ -22,12 +22,13 @@ This is provided without warranty of any kind.
 
 Contents:
 
-    samplesig.html       : Sample html file filled to the gills with lorem ipsum and defines 
-                           some of the base elements for the sample app.
-    httpserver.py        : VERY SIMPLE SERVER here only to leverage the GET requests for the css and js resources.
-                           It runs under python 2.7.x. You will need to convert it to run under python3.
-    css/samplesig.css    : Actual CSS code used by the browser.
-    css/samplesig.scss   : SCSS base code. 
-    js/samplesig.js      : JavaScript code for the sample app.
-    js/barcode-code39.js : JavaScript code specifically for generating Code 39 barcodes.
-    cookies.js           : JavaScript code for managing cookie data. (Found the examples on various web pages)
+    samplesig.html            : Sample html file filled to the gills with lorem ipsum and defines 
+                                some of the base elements for the sample app.
+    httpserver.py             : VERY SIMPLE SERVER here only to leverage the GET requests for the css and js resources.
+                                It runs under python 2.7.x. You will need to convert it to run under python3.
+    css/samplesig.css         : Actual CSS code used by the browser.
+    css/samplesig.scss        : SCSS base code. 
+    js/samplesig.js           : JavaScript code for the sample app.
+    js/barcode-code39.js      : JavaScript code specifically for generating Code 39 barcodes.
+    cookies.js                : JavaScript code for managing cookie data. (Found the examples on various web pages)
+    all-in-one/samplesig.html : No Python or web server? No problem! Just open this page directly in Chrome and have fun!
